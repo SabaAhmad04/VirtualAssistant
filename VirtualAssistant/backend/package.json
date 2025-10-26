@@ -7,6 +7,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "prestart": "npx kill-port 8000",
     "dev": "nodemon index.js"
   },
   "dependencies": {
@@ -22,5 +23,8 @@
     "mongoose": "^8.14.2",
     "multer": "^1.4.5-lts.2",
     "nodemon": "^3.1.10"
+  },
+  "devDependencies": {
+    "kill-port": "^2.0.1"
   }
 }
