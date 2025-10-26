@@ -22,10 +22,20 @@ app.use("/api/user", userRouter)
 const port = process.env.PORT || 5000
 
 // ✅ Connect DB first
-connectDb().then(() => {
-    app.listen(port, () => {
-        console.log("Server started on port", port)
-    })
-}).catch((err) => {
-    console.error("Failed to connect to DB", err)
+// connectDb().then(() => {
+//     app.listen(port, () => {
+//         console.log("Server started on port", port)
+//     })
+// }).catch((err) => {
+//     console.error("Failed to connect to DB", err)
+// })
+
+let isConnected = false;
+app.use((req, res, next) => {
+      if(!isConnected) {
+        connectDb();
+      }
+      next();
 })
+
+module.exports = app;
