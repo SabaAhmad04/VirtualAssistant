@@ -1,41 +1,36 @@
-import express from "express"
-import dotenv from "dotenv"
-dotenv.config()
-import connectDb from "./config/db.js"
-import authRouter from "./routes/auth.routes.js"
-import cors from "cors"
-import cookieParser from "cookie-parser"
-import userRouter from "./routes/user.routes.js"
-import geminiResponse from "./gemini.js"
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import connectDb from "./config/db.js";
+import authRouter from "./routes/auth.routes.js";
+import userRouter from "./routes/user.routes.js";
+import geminiResponse from "./gemini.js"; // only if you're using it
 
-const app = express()
+dotenv.config();
 
-app.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true
-}))
-app.use(express.json())
-app.use(cookieParser())
-app.use("/api/auth", authRouter)
-app.use("/api/user", userRouter)
+const app = express();
 
-const port = process.env.PORT || 5000
+app.use(
+  cors({
+    origin: "http://localhost:5173", // change to your frontend URL when deployed
+    credentials: true,
+  })
+);
+app.use(express.json());
+app.use(cookieParser());
 
-// ✅ Connect DB first
-// connectDb().then(() => {
-//     app.listen(port, () => {
-//         console.log("Server started on port", port)
-//     })
-// }).catch((err) => {
-//     console.error("Failed to connect to DB", err)
-// })
+app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 
-let isConnected = false;
-app.use((req, res, next) => {
-      if(!isConnected) {
-        connectDb();
-      }
-      next();
-})
+// ✅ Connect to DB once
+await connectDb();
 
-module.exports = app;
+// ✅ Start server if running locally (Vercel handles this automatically)
+const port = process.env.PORT || 8000;
+if (process.env.NODE_ENV !== "production") {
+  app.listen(port, () => console.log(`Server running on port ${port}`));
+}
+
+// ✅ Export app for Vercel
+export default app;
