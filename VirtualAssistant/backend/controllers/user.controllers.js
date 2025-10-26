@@ -19,6 +19,10 @@ return res.status(400).json({message:"user not found"})
 export const updateAssistant=async (req,res)=>{
    try {
       const {assistantName,imageUrl}=req.body
+      console.log("name",assistantName);
+      console.log("body",req.body);
+      console.log("file",req.file);
+      
       let assistantImage;
 if(req.file){
    assistantImage=await uploadOnCloudinary(req.file.path)
@@ -26,6 +30,8 @@ if(req.file){
    assistantImage=imageUrl
 }
 
+  console.log("image",assistantImage);
+  console.log("user",req.userId);
 const user=await User.findByIdAndUpdate(req.userId,{
    assistantName,assistantImage
 },{new:true}).select("-password")
