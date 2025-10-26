@@ -13,7 +13,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // change to your frontend URL when deployed
+    origin: "https://virtual-assistant-9y56.vercel.app", // change to your frontend URL when deployed
     credentials: true,
   })
 );
