@@ -47,6 +47,7 @@ return res.status(200).json(user)
 export const askToAssistant=async (req,res)=>{
    try {
       const {command}=req.body
+      console.log("command",command);
       const user=await User.findById(req.userId);
       user.history.push(command)
       user.save()
