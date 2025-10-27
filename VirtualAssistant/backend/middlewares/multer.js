@@ -10,4 +10,5 @@ const storage=multer.diskStorage({
 })
 
 const upload=multer({storage})
+console.log("upload",upload);
 export default upload
